@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.android.example.private_network_class.databinding.FragmentFirstBinding
 import kotlinx.coroutines.launch
@@ -35,23 +37,8 @@ class AuthorizationInterceptor : Interceptor {
 
 class FirstFragment : Fragment() {
 
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentFirstBinding
-
-    val logging = HttpLoggingInterceptor()
-    val authorizationInterceptor = AuthorizationInterceptor()
-    val client = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .addInterceptor(authorizationInterceptor)
-        .build()
-
-    val retrofit = Retrofit.Builder()
-        .client(client)
-        .baseUrl("https://pokemon-go1.p.rapidapi.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val apiService = retrofit.create(PokemonApiService::class.java)
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +47,11 @@ class FirstFragment : Fragment() {
 
         binding = FragmentFirstBinding.inflate(layoutInflater, container, false)
 
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        retrieveDetails()
+        viewModel.details.observe(viewLifecycleOwner, { result ->
+            setDetails(result)
+        })
+
+        viewModel.retrieveDetails()
 
         return binding.root
     }
@@ -71,14 +61,4 @@ class FirstFragment : Fragment() {
         binding.textView3.text =  getString(R.string.names, result.second)
     }
 
-    private fun retrieveDetails() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val details = apiService.getDetails()
-                setDetails(details)
-            } catch (e: Exception) {
-                Log.v("First Fragment", "ERROR ${e.message}")
-            }
-        }
-    }
 }
