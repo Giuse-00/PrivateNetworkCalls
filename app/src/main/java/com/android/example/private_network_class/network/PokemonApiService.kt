@@ -1,6 +1,6 @@
-package com.android.example.private_network_class
+package com.android.example.private_network_class.network
 
-import okhttp3.Call
+import com.android.example.private_network_class.network.dto.Data
 import retrofit2.http.GET
 
 interface PokemonApiService {

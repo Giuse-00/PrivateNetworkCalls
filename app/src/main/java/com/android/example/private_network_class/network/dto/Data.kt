@@ -1,5 +1,6 @@
-package com.android.example.private_network_class
+package com.android.example.private_network_class.network.dto
 
+import com.android.example.private_network_class.network.dto.X1
 import com.google.gson.annotations.SerializedName
 
 data class Data(
