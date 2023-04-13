@@ -1,10 +1,12 @@
 package com.android.example.private_network_class
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.android.example.private_network_class.databinding.FragmentFirstBinding
 import com.android.example.private_network_class.model.MainViewModel
@@ -26,7 +28,6 @@ class AuthorizationInterceptor : Interceptor {
         return chain.proceed(newRequest)
     }
 }
-
 class FirstFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
@@ -39,9 +40,9 @@ class FirstFragment : Fragment() {
 
         binding = FragmentFirstBinding.inflate(layoutInflater, container, false)
 
-        viewModel.details.observe(viewLifecycleOwner, { result ->
+        viewModel.details.observe(viewLifecycleOwner) { result ->
             setDetails(result)
-        })
+        }
 
         viewModel.retrieveDetails()
 
@@ -49,8 +50,17 @@ class FirstFragment : Fragment() {
     }
 
     private fun setDetails(result: Data) {
+        prefs.prefString = DataObject.stringForSharedPref
         binding.textView2.text =  getString(R.string.names, result.first)
         binding.textView3.text =  getString(R.string.names, result.second)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.button.setOnClickListener {
+            Toast.makeText(requireContext(), prefs.prefString, Toast.LENGTH_LONG).show()
+        }
     }
 
 }
