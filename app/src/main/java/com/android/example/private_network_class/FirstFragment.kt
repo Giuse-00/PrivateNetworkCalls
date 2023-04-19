@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.android.example.private_network_class.databinding.FragmentFirstBinding
 import com.android.example.private_network_class.model.MainViewModel
 import com.android.example.private_network_class.network.dto.Data
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -40,9 +42,12 @@ class FirstFragment : Fragment() {
 
         binding = FragmentFirstBinding.inflate(layoutInflater, container, false)
 
-        viewModel.details.observe(viewLifecycleOwner) { result ->
-            setDetails(result)
+        lifecycleScope.launch {
+            viewModel.details.collect{ result ->
+                setDetails(result)
+            }
         }
+
 
         viewModel.retrieveDetails()
 

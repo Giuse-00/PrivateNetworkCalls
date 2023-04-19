@@ -2,9 +2,6 @@ package com.android.example.private_network_class
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.android.example.private_network_class.network.dto.Data
-import com.android.example.private_network_class.network.dto.X1
-import com.google.gson.Gson
 
 class Prefs(context: Context) {
 
