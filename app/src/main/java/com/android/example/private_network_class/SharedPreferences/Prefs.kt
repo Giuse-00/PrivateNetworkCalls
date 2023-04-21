@@ -1,4 +1,4 @@
-package com.android.example.private_network_class
+package com.android.example.private_network_class.SharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences

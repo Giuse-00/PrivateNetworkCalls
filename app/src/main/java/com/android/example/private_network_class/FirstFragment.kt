@@ -1,6 +1,5 @@
 package com.android.example.private_network_class
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.android.example.private_network_class.SharedPreferences.DataObject
+import com.android.example.private_network_class.SharedPreferences.prefs
 import com.android.example.private_network_class.databinding.FragmentFirstBinding
 import com.android.example.private_network_class.model.MainViewModel
 import com.android.example.private_network_class.network.dto.Data
@@ -47,7 +48,6 @@ class FirstFragment : Fragment() {
                 setDetails(result)
             }
         }
-
 
         viewModel.retrieveDetails()
 

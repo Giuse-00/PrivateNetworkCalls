@@ -1,24 +1,37 @@
 package com.android.example.private_network_class.model
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.example.private_network_class.Prefs
+import com.android.example.private_network_class.SharedPreferences.MyApplication
 import com.android.example.private_network_class.network.RetrofitInstance
 import com.android.example.private_network_class.network.dto.Data
-import com.android.example.private_network_class.prefs
+import com.android.example.private_network_class.repository.entity.RepoEntity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: MyApplication) : AndroidViewModel(application) {
+
+    private val repoDao = (application as MyApplication).database.repoDao()
 
     val details = MutableSharedFlow<Data>()
+
+    fun getAllName(): List<RepoEntity>{
+        return repoDao.getAll()
+    }
+
+    suspend fun insertName(name: RepoEntity){
+        repoDao.insert(name)
+    }
+
+    suspend fun updateName(name: RepoEntity){
+        repoDao.update(name)
+    }
+
+    suspend fun deleteName(name: RepoEntity){
+        repoDao.delete(name)
+    }
+
     fun retrieveDetails(){
         Log.d("First Fragment", "Details called")
         viewModelScope.launch {

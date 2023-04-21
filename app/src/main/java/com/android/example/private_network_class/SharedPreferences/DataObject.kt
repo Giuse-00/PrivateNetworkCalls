@@ -1,4 +1,4 @@
-package com.android.example.private_network_class
+package com.android.example.private_network_class.SharedPreferences
 
 object DataObject {
 
